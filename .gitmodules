@@ -1,6 +1,0 @@
-[submodule "database-repo"]
-	path = database-repo
-	url = https://github.com/Kiran212-sketch/database-repo.git
-[submodule "suman-userprofile"]
-	path = suman-userprofile
-	url = https://github.com/sumankorrapati46/suman-userprofile.git
