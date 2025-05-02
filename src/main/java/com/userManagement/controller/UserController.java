@@ -6,7 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+<<<<<<< HEAD
+=======
 import org.springframework.web.bind.annotation.DeleteMapping;
+>>>>>>> 6a14d8a28b997f4412bfd244449bf22e52a23bc0
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +22,10 @@ import com.userManagement.dto.UserDto;
 import com.userManagement.security.JwtUtil;
 import com.userManagement.service.UserService;
 
+<<<<<<< HEAD
+=======
 import jakarta.servlet.http.HttpServletRequest;
+>>>>>>> 6a14d8a28b997f4412bfd244449bf22e52a23bc0
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +56,24 @@ public class UserController {
 	}
 
 	@PostMapping("/register")
+	public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto userDTO) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(userService.registerUser(userDTO));
+	}
+
+	@PatchMapping("/update")
+	public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDTO) {
+		return ResponseEntity.status(HttpStatus.OK).body(userService.registerUser(userDTO));
+	}
+
+	@PatchMapping("/deactivate/{id}")
+	public ResponseEntity<String> deactivateUser(@PathVariable long id) {
+		return ResponseEntity.status(HttpStatus.OK).body(userService.deactivateUser(id));
+	}
+
+	@PatchMapping("/delete/{id}")
+	public ResponseEntity<String> deleteUser(@PathVariable long id) {
+		return ResponseEntity.status(HttpStatus.OK).body(userService.deleteUser(id));
+
 	public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto userDTO,HttpServletRequest request) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.registerUser(userDTO,request));
 	}
@@ -67,6 +91,7 @@ public class UserController {
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String> deleteUser(@PathVariable long id,HttpServletRequest request) {
 		return ResponseEntity.status(HttpStatus.OK).body(userService.deleteUser(id,request));
+>>>>>>> 6a14d8a28b997f4412bfd244449bf22e52a23bc0
 	}
 
 	@GetMapping("/test")
