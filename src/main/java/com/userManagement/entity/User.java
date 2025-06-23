@@ -19,22 +19,45 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "myUser")
 public class User {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 
-	@NotBlank(message = "firstName must be provided")
-	private String firstName;
-	@NotBlank(message = "lastName must be provided")
-	private String lastName;
-	@NotBlank(message = "email must be provided")
-	private String email;
-	@NotBlank(message = "phoneNumber must be provided")
-	private String phoneNumber;
-	@NotBlank(message = "password must be provided")
-	private String password;
-	@Column(nullable = false)
-	@Builder.Default
-	private boolean enabled = true;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @NotBlank(message = "firstName must be provided")
+    private String firstName;
+
+    @NotBlank(message = "lastName must be provided")
+    private String lastName;
+
+    @NotBlank(message = "email must be provided")
+    private String email;
+
+    @NotBlank(message = "phoneNumber must be provided")
+    private String phoneNumber;
+
+    @NotBlank(message = "password must be provided")
+    private String password;
+
+    @NotBlank(message = "dateOfBirth must be provided")
+    private String dateOfBirth;
+
+    @NotBlank(message = "gender must be provided")
+    private String gender;
+
+    @NotBlank(message = "country must be provided")
+    private String country;
+
+    @NotBlank(message = "state must be provided")
+    private String state;
+
+    @NotBlank(message = "pinCode must be provided")
+    private String pinCode;
+
+    @NotBlank(message = "timeZone must be provided")
+    private String timeZone;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean enabled = true;
 }
