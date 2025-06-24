@@ -1,0 +1,12 @@
+com\userManagement\entity\User.class
+com\userManagement\entity\User$UserBuilder.class
+com\userManagement\security\JwtUtil.class
+com\userManagement\repository\UserRepository.class
+com\userManagement\config\SecurityConfig.class
+com\userManagement\service\AuditLogService.class
+com\userManagement\entity\Auditlog.class
+com\userManagement\security\JwtAuthenticationFilter.class
+com\userManagement\controller\AuditLogController.class
+com\userManagement\repository\AuditLogRepository.class
+com\userManagement\security\CustomUserDetailsService.class
+com\userManagement\UserManagementApplication.class

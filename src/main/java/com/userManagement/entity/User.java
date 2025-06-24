@@ -1,5 +1,7 @@
 package com.userManagement.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "myUser")
+@Table(name = "my_user")  // Consistent with DB naming and previous logs
 public class User {
 
     @Id
@@ -54,10 +56,17 @@ public class User {
     @NotBlank(message = "pinCode must be provided")
     private String pinCode;
 
-    @NotBlank(message = "timeZone must be provided")
+    @Column(nullable = true) // Allows old records with null
     private String timeZone;
 
     @Column(nullable = false)
     @Builder.Default
     private boolean enabled = true;
+
+    // 🔐 OTP fields for forgot-password
+    @Column(nullable = true)
+    private String otp;
+
+    @Column(nullable = true)
+    private LocalDateTime otpGeneratedAt;
 }

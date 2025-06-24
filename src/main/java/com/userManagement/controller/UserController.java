@@ -72,23 +72,23 @@ public class UserController {
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto userDTO,HttpServletRequest request) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(userService.registerUser(userDTO,request));
+	public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto userDTO) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(userService.registerUser(userDTO));
 	}
 
 	@PatchMapping("/update")
-	public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDTO,HttpServletRequest request) {
-		return ResponseEntity.status(HttpStatus.OK).body(userService.registerUser(userDTO,request));
+	public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDTO) {
+		return ResponseEntity.status(HttpStatus.OK).body(userService.registerUser(userDTO));
 	}
 
 	@PatchMapping("/deactivate/{id}")
-	public ResponseEntity<String> deactivateUser(@PathVariable long id,HttpServletRequest request) {
-		return ResponseEntity.status(HttpStatus.OK).body(userService.deactivateUser(id,request));
+	public ResponseEntity<String> deactivateUser(@PathVariable long id ) {
+		return ResponseEntity.status(HttpStatus.OK).body(userService.deactivateUser(id));
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<String> deleteUser(@PathVariable long id,HttpServletRequest request) {
-		return ResponseEntity.status(HttpStatus.OK).body(userService.deleteUser(id,request));
+	public ResponseEntity<String> deleteUser(@PathVariable long id) {
+		return ResponseEntity.status(HttpStatus.OK).body(userService.deleteUser(id));
 	}
 
 	@GetMapping("/test")

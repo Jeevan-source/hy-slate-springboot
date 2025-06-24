@@ -1,5 +1,6 @@
 package com.userManagement.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,23 +11,45 @@ import com.userManagement.entity.User;
 import com.userManagement.repository.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class UserService {
 
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
-	
-    private final AuditLogService auditLogService;
+	private EmailService emailService;
 
-	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,AuditLogService auditLogService) {
+	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
-		this.auditLogService=auditLogService;
+		this.emailService = emailService;
 	}
 
-	public UserDto registerUser(UserDto userDto, HttpServletRequest request) {
+	public void sendOtpToEmail(String email) {
+		User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+		String otp = String.valueOf((int) ((Math.random() * 900000) + 100000));
+		user.setOtp(otp);
+		user.setOtpGeneratedAt(LocalDateTime.now());
+		userRepository.save(user);
+		emailService.sendPasswordResetOtp(email, otp);
+	}
+
+	public void resetPasswordWithOtp(String email, String otp, String newPassword) {
+		User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+		if (!otp.equals(user.getOtp())) {
+			throw new RuntimeException("Invalid OTP");
+		}
+		if (user.getOtpGeneratedAt().isBefore(LocalDateTime.now().minusMinutes(10))) {
+			throw new RuntimeException("OTP expired");
+		}
+		user.setPassword(passwordEncoder.encode(newPassword));
+		user.setOtp(null);
+		user.setOtpGeneratedAt(null);
+
+		userRepository.save(user);
+	}
+
+	public UserDto registerUser(UserDto userDto) {
 		// Check if email or phone number already exists
 		if (userRepository.existsByEmail(userDto.getEmail())) {
 			throw new IllegalArgumentException("Email is already registered!");
@@ -41,31 +64,27 @@ public class UserService {
 				.password(passwordEncoder.encode(userDto.getPassword())) // Encrypt password
 				.build();
 		userRepository.save(user);
-        auditLogService.logActivity(user.getEmail(), "ACCOUNT_CREATED", "User created their account", request);
+
 		// Save user in the database
 		return userDto;
 	}
 
-	public String deleteUser(long id, HttpServletRequest request) {
+	public String deleteUser(long id) {
 		Optional<User> user = userRepository.findById(id);
-		
 		if (user.isEmpty()) {
 			throw new EntityNotFoundException("user not Found");
 		}
-		
 		userRepository.delete(user.get());
-		auditLogService.logActivity(user.get().getEmail(), "ACCOUNT_DELETED", "User deleted their account", request);
 		return "user deleted successfully";
 	}
 
-	public String deactivateUser(long id, HttpServletRequest request) {
+	public String deactivateUser(long id) {
 		Optional<User> user = userRepository.findById(id);
 		if (user.isEmpty())
 			throw new EntityNotFoundException("user not found");
 		User user1 = user.get();
 		user1.setEnabled(false);
 		userRepository.save(user1);
-		auditLogService.logActivity(user1.getEmail(), "ACCOUNT_DEACTIVATED", "User deactivated their account", request);
 		return "deactivated successfully";
 	}
 }
