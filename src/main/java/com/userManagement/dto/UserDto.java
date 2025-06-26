@@ -1,5 +1,8 @@
 package com.userManagement.dto;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,4 +24,6 @@ public class UserDto {
     private String state;
     private String pinCode;
     private String timeZone;
+    private String otp;
+    private LocalDateTime otpGeneratedAt;
 }

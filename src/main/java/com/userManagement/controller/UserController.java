@@ -58,6 +58,7 @@ public class UserController {
 		Authentication authentication = null;
 		try {
 			String userName = userDto.getEmail() != null ? userDto.getEmail() : userDto.getPhoneNumber();
+			System.out.println(userName);
 			authentication = authenticationManager
 					.authenticate(new UsernamePasswordAuthenticationToken(userName, userDto.getPassword()));
 		} catch (Exception e) {

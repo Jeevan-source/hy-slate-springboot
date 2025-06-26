@@ -49,24 +49,35 @@ public class UserService {
 		userRepository.save(user);
 	}
 
-	public UserDto registerUser(UserDto userDto) {
+	public UserDto registerUser(UserDto dto) {
 		// Check if email or phone number already exists
-		if (userRepository.existsByEmail(userDto.getEmail())) {
+		if (userRepository.existsByEmail(dto.getEmail())) {
 			throw new IllegalArgumentException("Email is already registered!");
 		}
-		if (userRepository.existsByPhoneNumber(userDto.getPhoneNumber())) {
+		if (userRepository.existsByPhoneNumber(dto.getPhoneNumber())) {
 			throw new IllegalArgumentException("Phone number is already registered!");
 		}
-
+		
 		// Convert DTO to Entity
-		User user = User.builder().firstName(userDto.getFirstName()).lastName(userDto.getLastName())
-				.email(userDto.getEmail()).phoneNumber(userDto.getPhoneNumber())
-				.password(passwordEncoder.encode(userDto.getPassword())) // Encrypt password
-				.build();
+		User user = User.builder()
+		        .firstName(dto.getFirstName())
+		        .lastName(dto.getLastName())
+		        .email(dto.getEmail())
+		        .phoneNumber(dto.getPhoneNumber())
+		        .password(passwordEncoder.encode(dto.getPassword()))
+		        .dateOfBirth(dto.getDateOfBirth())
+		        .gender(dto.getGender())
+		        .country(dto.getCountry())
+		        .state(dto.getState())
+		        .pinCode(dto.getPinCode())
+		        .timeZone(dto.getTimeZone())
+		        .otp(dto.getOtp())
+		        .otpGeneratedAt(dto.getOtpGeneratedAt())
+		        .build();
 		userRepository.save(user);
 
 		// Save user in the database
-		return userDto;
+		return dto;
 	}
 
 	public String deleteUser(long id) {
